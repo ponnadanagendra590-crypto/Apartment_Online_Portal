@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block title %}Delete Apartment - Apartment Rental Portal{% endblock %}
+
+{% block extra_style %}
+<style>
+  .confirm-delete-container {
+    max-width: 500px;
+    margin: 50px auto;
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  .confirm-icon {
+    text-align: center;
+    font-size: 3rem;
+    margin-bottom: 20px;
+  }
+
+  .confirm-delete-container h2 {
+    color: #2d3748;
+    text-align: center;
+    margin-bottom: 15px;
+  }
+
+  .confirm-delete-container p {
+    color: #718096;
+    text-align: center;
+    margin-bottom: 10px;
+    line-height: 1.6;
+  }
+
+  .apartment-details {
+    background: #f7fafc;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 25px 0;
+    border-left: 4px solid #667eea;
+  }
+
+  .apartment-details p {
+    margin: 8px 0;
+    color: #2d3748;
+  }
+
+  .apartment-details strong {
+    color: #667eea;
+  }
+
+  .warning-message {
+    background: #fff5f5;
+    border: 1px solid #feb2b2;
+    color: #c53030;
+    padding: 15px;
+    border-radius: 6px;
+    margin: 20px 0;
+    text-align: center;
+    font-weight: 600;
+  }
+
+  .actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 30px;
+  }
+
+  .btn-action {
+    flex: 1;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    text-align: center;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: block;
+  }
+
+  .btn-cancel {
+    background: #e2e8f0;
+    color: #2d3748;
+  }
+
+  .btn-cancel:hover {
+    background: #cbd5e0;
+  }
+
+  .btn-confirm-delete {
+    background: #f56565;
+    color: white;
+  }
+
+  .btn-confirm-delete:hover {
+    background: #e53e3e;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="confirm-delete-container">
+  <div class="confirm-icon">⚠️</div>
+  
+  <h2>Delete Apartment?</h2>
+  <p>You're about to permanently delete this apartment listing.</p>
+
+  <div class="apartment-details">
+    <p><strong>Title:</strong> {{ apartment.title }}</p>
+    <p><strong>Location:</strong> {{ apartment.city }}</p>
+    <p><strong>Rent:</strong> ${{ apartment.rent }}/month</p>
+    <p><strong>Bedrooms:</strong> {{ apartment.beds }} | <strong>Bathrooms:</strong> {{ apartment.baths }}</p>
+  </div>
+
+  <div class="warning-message">
+    ⚠️ This action cannot be undone. All associated data will be permanently deleted.
+  </div>
+
+  <form method="POST" style="margin-bottom: 0;">
+    {% csrf_token %}
+    <div class="actions">
+      <a href="{% url 'rental:apartment_detail' apartment.pk %}" class="btn-action btn-cancel">Cancel</a>
+      <button type="submit" class="btn-action btn-confirm-delete">Delete Permanently</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

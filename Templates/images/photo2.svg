@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+  <rect width="800" height="600" fill="#fff8ea"/>
+  <g transform="translate(100,90)">
+    <rect x="0" y="0" width="600" height="380" rx="10" fill="#fff" stroke="#f0d9b0" stroke-width="6"/>
+    <rect x="24" y="24" width="552" height="200" rx="8" fill="#fde9c7"/>
+    <rect x="24" y="244" width="200" height="110" rx="6" fill="#fffde8"/>
+    <rect x="244" y="244" width="332" height="110" rx="6" fill="#fff"/>
+    <text x="36" y="232" font-family="Segoe UI, Roboto, Arial" font-size="18" fill="#6b3f05">Cozy Kitchen • Natural Light</text>
+  </g>
+  <text x="24" y="46" font-family="Segoe UI, Roboto, Arial" font-weight="700" font-size="26" fill="#7a4f0d">Apartment Photo — Kitchen</text>
+</svg>

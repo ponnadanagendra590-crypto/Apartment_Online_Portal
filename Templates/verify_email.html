@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Verify Email - Apartment Rental Portal{% endblock %}
+
+{% block extra_style %}
+<style>
+  .verify-container { max-width: 420px; margin: 40px auto; padding: 0 20px; }
+  .verify-card { background: white; padding: 32px; border-radius: 10px; box-shadow: 0 4px 14px rgba(0,0,0,0.08); }
+  .form-group { margin-bottom: 14px; }
+  label { display:block; margin-bottom:6px; font-weight:600; }
+  input { width:100%; padding:10px; border:2px solid #e2e8f0; border-radius:6px }
+  .btn { width:100%; padding:10px; background:#667eea; color:#fff; border:none; border-radius:6px; }
+  .muted { font-size:0.9rem; color:#666; text-align:center; margin-top:12px }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="verify-container">
+  <div class="verify-card">
+    <h2>Verify your email</h2>
+
+    {% if error %}
+      <div class="error-message">{{ error }}</div>
+    {% endif %}
+    {% if message %}
+      <div class="success-message">{{ message }}</div>
+    {% endif %}
+
+    <form method="post">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input id="username" name="username" value="{{ user.username if user }}" required />
+      </div>
+      <div class="form-group">
+        <label for="code">Verification code</label>
+        <input id="code" name="code" required />
+      </div>
+      <button class="btn" type="submit">Verify</button>
+    </form>
+
+    <form method="post" action="{% url 'rental:resend_otp' %}" style="margin-top:12px">
+      {% csrf_token %}
+      <input type="hidden" name="username" value="{{ user.username if user }}" />
+      <button class="btn" type="submit">Resend code</button>
+    </form>
+
+    <div class="muted">Check your email (spam folder too). Code expires in 15 minutes.</div>
+  </div>
+</div>
+{% endblock %}

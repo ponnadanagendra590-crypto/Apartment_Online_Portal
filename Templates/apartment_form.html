@@ -1,0 +1,204 @@
+{% extends "base.html" %}
+
+{% block title %}{% if apartment %}Edit{% else %}Add{% endif %} Apartment - Apartment Rental Portal{% endblock %}
+
+{% block extra_style %}
+<style>
+  .form-container {
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  
+  .form-group {
+    margin-bottom: 24px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 8px;
+    color: #2d3748;
+    font-weight: 600;
+  }
+  
+  input[type="text"],
+  input[type="email"],
+  input[type="number"],
+  textarea,
+  input[type="file"] {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e2e8f0;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: border-color 0.3s ease;
+  }
+  
+  input[type="text"]:focus,
+  input[type="email"]:focus,
+  input[type="number"]:focus,
+  textarea:focus,
+  input[type="file"]:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  }
+  
+  textarea {
+    resize: vertical;
+    min-height: 120px;
+  }
+  
+  .row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+  }
+  
+  .row > div {
+    flex: 1;
+  }
+  
+  .thumbs {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+  }
+  
+  .thumbs img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 2px solid #e2e8f0;
+    transition: all 0.3s ease;
+  }
+  
+  .thumbs img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 30px;
+  }
+  
+  button {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  button[type="submit"] {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    flex: 1;
+  }
+  
+  button[type="submit"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+  }
+  
+  button[type="button"] {
+    background: #e2e8f0;
+    color: #2d3748;
+    flex: 1;
+  }
+  
+  button[type="button"]:hover {
+    background: #cbd5e0;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<h1>{% if apartment %}✏️ Edit{% else %}➕ Add New{% endif %} Apartment</h1>
+<p style="color: #718096; margin-bottom: 30px;">Fill in the details to {% if apartment %}update{% else %}create{% endif %} your property listing</p>
+
+<div class="form-container">
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    <div class="form-group">
+      <label for="title">Title *</label>
+      <input type="text" id="title" name="title" placeholder="e.g., Bright 2-bedroom near downtown" value="{{ apartment.title|default:'' }}" required>
+    </div>
+    
+    <div class="form-group">
+      <label for="price">Monthly Rent (USD) *</label>
+      <input type="number" id="price" name="price" min="0" step="0.01" value="{{ apartment.rent|default:'' }}" required>
+    </div>
+    
+    <div class="form-group">
+      <label>Property Details</label>
+      <div class="row">
+        <div>
+          <label for="beds" style="margin-bottom: 4px;">Bedrooms</label>
+          <input type="number" id="beds" name="beds" min="0" step="1" value="{{ apartment.beds|default:'' }}">
+        </div>
+        <div>
+          <label for="baths" style="margin-bottom: 4px;">Bathrooms</label>
+          <input type="number" id="baths" name="baths" min="0" step="1" value="{{ apartment.baths|default:'' }}">
+        </div>
+        <div>
+          <label for="area" style="margin-bottom: 4px;">Area (sqft)</label>
+          <input type="number" id="area" name="area" min="0" step="1" value="{{ apartment.area|default:'' }}">
+        </div>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label for="address">Address *</label>
+      <input type="text" id="address" name="address" placeholder="Street address" value="{{ apartment.address|default:'' }}" required>
+    </div>
+    
+    <div class="form-group">
+      <label for="city">City *</label>
+      <input type="text" id="city" name="address" placeholder="City name" value="{{ apartment.city|default:'' }}" required>
+    </div>
+    
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea id="description" name="description" placeholder="Tell more about this apartment...">{{ apartment.description|default:'' }}</textarea>
+    </div>
+    
+    <div class="form-group">
+      <label for="images">📸 Photos (select multiple)</label>
+      <input type="file" id="images" name="images" accept="image/*" multiple>
+      <p style="color: #718096; font-size: 0.9rem; margin-top: 8px;">Up to 8 images will be previewed</p>
+      <div class="thumbs" id="previews"></div>
+    </div>
+    
+    <div class="actions">
+      <button type="submit">💾 Save Listing</button>
+      <button type="button" onclick="window.history.back()">Cancel</button>
+    </div>
+  </form>
+</div>
+
+<script>
+  const input = document.getElementById('images');
+  const previews = document.getElementById('previews');
+  input.addEventListener('change', () => {
+    previews.innerHTML = '';
+    Array.from(input.files).slice(0, 8).forEach(file => {
+      const reader = new FileReader();
+      reader.onload = e => {
+        const img = document.createElement('img');
+        img.src = e.target.result;
+        img.alt = file.name;
+        previews.appendChild(img);
+      };
+      reader.readAsDataURL(file);
+    });
+  });
+</script>
+{% endblock %}

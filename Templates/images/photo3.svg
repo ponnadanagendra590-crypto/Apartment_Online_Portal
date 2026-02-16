@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+  <rect width="800" height="600" fill="#f3f6ff"/>
+  <g transform="translate(48,64)">
+    <rect x="0" y="0" width="704" height="472" rx="12" fill="#ffffff" stroke="#dbe7ff" stroke-width="6"/>
+    <rect x="32" y="32" width="640" height="200" rx="8" fill="#dfe9ff"/>
+    <rect x="32" y="252" width="300" height="180" rx="8" fill="#ffffff"/>
+    <rect x="376" y="252" width="296" height="180" rx="8" fill="#f7f9ff"/>
+    <text x="44" y="244" font-family="Segoe UI, Roboto, Arial" font-size="18" fill="#17356a">Bedroom • Balcony View</text>
+  </g>
+  <text x="24" y="42" font-family="Segoe UI, Roboto, Arial" font-weight="700" font-size="26" fill="#163a73">Apartment Photo — Bedroom</text>
+</svg>
