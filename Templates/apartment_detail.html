@@ -1,0 +1,210 @@
+{% extends "base.html" %}
+
+{% block title %}{{ apartment.title }} - Apartment Rental Portal{% endblock %}
+
+{% block extra_style %}
+<style>
+  .detail-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 40px;
+  }
+  
+  .gallery-large {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .gallery-large img {
+    width: 100%;
+    border-radius: 12px;
+    object-fit: cover;
+    max-height: 300px;
+  }
+  
+  .thumbs {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+  }
+  
+  .thumbs img {
+    width: 100px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .thumbs img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .apartment-info {
+    background: #f7fafc;
+    padding: 25px;
+    border-radius: 12px;
+  }
+  
+  .apartment-info h2 {
+    color: #2d3748;
+    font-size: 2rem;
+    margin-bottom: 15px;
+  }
+  
+  .price {
+    font-size: 2rem;
+    color: #667eea;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .specs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-bottom: 25px;
+  }
+  
+  .spec {
+    text-align: center;
+  }
+  
+  .spec-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #667eea;
+  }
+  
+  .spec-label {
+    color: #718096;
+    font-size: 0.9rem;
+    margin-top: 5px;
+  }
+  
+  .actions {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .btn-action {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+  }
+  
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+  }
+  
+  .btn-secondary {
+    background: #e2e8f0;
+    color: #2d3748;
+  }
+  
+  .btn-secondary:hover {
+    background: #cbd5e0;
+  }
+
+  .btn-danger {
+    background: #f56565;
+    color: white;
+  }
+
+  .btn-danger:hover {
+    background: #e53e3e;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(245, 101, 101, 0.3);
+  }
+  
+  .description-section {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    margin-top: 30px;
+  }
+  
+  @media (max-width: 768px) {
+    .detail-header {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<h1 style="margin-bottom: 10px;">{{ apartment.title }}</h1>
+
+<div class="detail-header">
+  <div>
+    <div class="gallery-large">
+      {% if apartment.images.all %}
+        {% for img in apartment.images.all|slice:":2" %}
+          <img src="{{ img.image.url }}" alt="{{ apartment.title }}" />
+        {% endfor %}
+      {% else %}
+        <img src="/static/logo_apartment.svg" alt="placeholder" />
+      {% endif %}
+    </div>
+    <div class="thumbs">
+      {% for img in apartment.images.all %}
+        <img src="{{ img.image.url }}" alt="{{ apartment.title }}" title="Click to view" />
+      {% empty %}
+        <img src="/static/logo_apartment.svg" alt="placeholder" />
+      {% endfor %}
+    </div>
+  </div>
+  
+  <div class="apartment-info">
+    <h2>${{ apartment.rent }}</h2>
+    <p style="color: #718096; margin-bottom: 20px;">per month</p>
+    
+    <div class="specs">
+      <div class="spec">
+        <div class="spec-value">{{ apartment.beds }}</div>
+        <div class="spec-label">Bedrooms</div>
+      </div>
+      <div class="spec">
+        <div class="spec-value">{{ apartment.baths }}</div>
+        <div class="spec-label">Bathrooms</div>
+      </div>
+      <div class="spec">
+        <div class="spec-value">{{ apartment.area }}</div>
+        <div class="spec-label">Sqft</div>
+      </div>
+    </div>
+    
+    <div style="margin-bottom: 20px;">
+      <p style="color: #718096; font-weight: 600;">📍 Location</p>
+      <p style="color: #2d3748;">{{ apartment.address }}</p>
+      <p style="color: #718096;">{{ apartment.city }}</p>
+    </div>
+    
+    <div class="actions">
+      <a href="{% url 'rental:apartment_edit' apartment.pk %}" class="btn-action btn-primary">Edit Listing</a>
+      <a href="{% url 'rental:apartment_delete' apartment.pk %}" class="btn-action btn-danger" onclick="return confirm('Are you sure you want to delete this apartment?');">Delete Listing</a>
+      <a href="{% url 'rental:apartment_list' %}" class="btn-action btn-secondary">Back to List</a>
+    </div>
+  </div>
+</div>
+
+{% if apartment.description %}
+  <div class="description-section">
+    <h3 style="color: #2d3748; margin-bottom: 15px;">📋 Description</h3>
+    <p style="color: #4a5568; line-height: 1.6;">{{ apartment.description }}</p>
+  </div>
+{% endif %}
+{% endblock %}

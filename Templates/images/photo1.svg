@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+  <rect width="800" height="600" fill="#e6f7f8"/>
+  <g transform="translate(80,80)">
+    <rect x="0" y="0" width="360" height="440" rx="8" fill="#ffffff" stroke="#d0e7ea" stroke-width="4"/>
+    <rect x="12" y="12" width="336" height="220" rx="6" fill="#cfeff4"/>
+    <rect x="12" y="244" width="150" height="28" rx="4" fill="#f5f6f7"/>
+    <rect x="12" y="282" width="308" height="150" rx="6" fill="#f8fafb" stroke="#e6eef0"/>
+    <text x="24" y="272" font-family="Segoe UI, Roboto, Arial" font-size="18" fill="#1f4f59">2 bed • 1 bath • 850 sqft</text>
+  </g>
+  <g transform="translate(480,120)">
+    <rect x="0" y="0" width="200" height="120" rx="6" fill="#cfeff4"/>
+    <rect x="0" y="140" width="200" height="120" rx="6" fill="#dff5f7"/>
+  </g>
+  <text x="24" y="40" font-family="Segoe UI, Roboto, Arial" font-weight="700" font-size="28" fill="#0b3940">Apartment Photo — Living Room</text>
+</svg>

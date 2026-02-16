@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}Apartment Rental Portal{% endblock %}</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      body {
+        font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 20px;
+        color: #333;
+      }
+      
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      
+      nav {
+        background: rgba(255, 255, 255, 0.95);
+        padding: 15px 30px;
+        border-radius: 12px;
+        margin-bottom: 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      }
+      
+      nav .logo {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #667eea;
+        text-decoration: none;
+      }
+      
+      nav .nav-links {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+      }
+      
+      nav a {
+        color: #667eea;
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.3s ease;
+      }
+      
+      nav a:hover {
+        color: #764ba2;
+      }
+      
+      nav .user-info {
+        color: #2d3748;
+      }
+      
+      .btn {
+        padding: 10px 18px;
+        border: none;
+        border-radius: 6px;
+        font-size: 0.95rem;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+        transition: all 0.3s ease;
+        font-weight: 600;
+      }
+      
+      .btn-primary {
+        background: #667eea;
+        color: white;
+      }
+      
+      .btn-primary:hover {
+        background: #764ba2;
+      }
+      
+      .btn-secondary {
+        background: #e2e8f0;
+        color: #2d3748;
+      }
+      
+      .btn-secondary:hover {
+        background: #cbd5e0;
+      }
+      
+      .content {
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      }
+      
+      {% block extra_style %}{% endblock %}
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <nav>
+        <a href="{% url 'rental:dashboard' %}" class="logo">🏠 Apartment Rental</a>
+        <div class="nav-links">
+          <a href="{% url 'rental:dashboard' %}">Dashboard</a>
+          <a href="{% url 'rental:apartment_list' %}">Apartments</a>
+          {% if user.is_authenticated %}
+            <span class="user-info">Welcome, <strong>{{ user.first_name|default:user.username }}</strong></span>
+            <a href="{% url 'rental:apartment_add' %}" class="btn btn-primary">+ Add Apartment</a>
+            <a href="{% url 'rental:logout' %}" class="btn btn-secondary">Logout</a>
+          {% else %}
+            <a href="{% url 'rental:login' %}" class="btn btn-secondary">Login</a>
+            <a href="{% url 'rental:register' %}" class="btn btn-primary">Register</a>
+          {% endif %}
+        </div>
+      </nav>
+      
+      <div class="content">
+        {% block content %}{% endblock %}
+      </div>
+    </div>
+  </body>
+</html>

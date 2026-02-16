@@ -4,16 +4,20 @@ services:
   backend:
     build: ./backend
     ports:
-      - "8000:8000"
+      - "0.0.0.0:8000:8000"
     depends_on:
       - db
+    environment:
+      - DATABASE_HOST=db
 
   frontend:
     build: ./frontend
     ports:
-      - "3000:3000"
+      - "0.0.0.0:3000:3000"
     depends_on:
       - backend
+    environment:
+      - REACT_APP_API_URL=http://localhost:8000
 
   db:
     image: mysql:8.0
